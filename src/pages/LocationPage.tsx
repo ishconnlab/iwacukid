@@ -1,5 +1,7 @@
 import { MapPin, Navigation, Bus, Car, Shield, Phone, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { MapView } from '../components/common/MapView';
+import { SITE } from '../lib/site';
 
 export function LocationPage() {
   return (
@@ -33,20 +35,11 @@ export function LocationPage() {
           </div>
         </div>
 
-        {/* Visual Map Graphic */}
-        <div className="aspect-[16/9] sm:aspect-[21/9] rounded-2xl bg-stone-900 border border-stone-800 text-white relative overflow-hidden flex items-center justify-center p-6 text-center">
-          <div className="space-y-2 max-w-md z-10">
-            <div className="w-12 h-12 rounded-2xl bg-orange-600 text-white flex items-center justify-center mx-auto shadow-lg shadow-orange-600/40 animate-bounce">
-              <MapPin className="w-6 h-6" />
-            </div>
-            <h3 className="font-black text-lg sm:text-xl">IWACU Kids Main Arena</h3>
-            <p className="text-stone-300 text-xs sm:text-sm">
-              Coordinates & Gate Entry: Nyakaliro Community Center Gate A
-            </p>
-          </div>
-          {/* Subtle grid pattern */}
-          <div className="absolute inset-0 opacity-20 rwandan-pattern-line pointer-events-none" />
-        </div>
+        {/* Interactive Map */}
+        <MapView
+          label="IWACU Kids Main Arena"
+          address="Nyakaliro Community Center, Rwamagana District, Eastern Province, Rwanda"
+        />
 
         {/* Transportation & Directions Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -78,7 +71,10 @@ export function LocationPage() {
           </span>
           <div className="flex items-center gap-3">
             <span className="font-bold text-orange-700 flex items-center gap-1">
-              <Phone className="w-3.5 h-3.5" /> +250 788 000 000 (Editable)
+              <Phone className="w-3.5 h-3.5" /> {SITE.supportPhoneDisplay}
+            </span>
+            <span className="font-semibold text-stone-500 flex items-center gap-1">
+              <Mail className="w-3.5 h-3.5" /> {SITE.email}
             </span>
           </div>
         </div>

@@ -19,6 +19,7 @@ import { api } from '../api/client';
 import { EventCard } from '../components/events/EventCard';
 import { TrendingEventsSlider } from '../components/home/TrendingEventsSlider';
 import { InteractiveKidsShowcase } from '../components/home/InteractiveKidsShowcase';
+import { VideoShowcase } from '../components/home/VideoShowcase';
 import { Reveal } from '../components/common/Reveal';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -360,6 +361,9 @@ export function HomePage() {
       <Reveal>
         <InteractiveKidsShowcase />
       </Reveal>
+
+      {/* WELCOME VIDEO — MENYA IWACU KIDS */}
+      <VideoShowcase />
 
       {/* UPCOMING EVENTS DISCOVERY */}
       <Reveal>

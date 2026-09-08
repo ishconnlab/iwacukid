@@ -1,8 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { Ticket, Sparkles, Languages } from 'lucide-react';
 import { useTicketWallet } from '../../context/TicketWalletContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { TrendingTicker } from '../common/TrendingTicker';
+import { InstallPWAButton } from '../pwa/InstallPWAButton';
+
+const navItemClass = ({ isActive }: { isActive: boolean }) =>
+  `relative px-3 py-2 rounded-xl text-xs font-extrabold transition-colors ${
+    isActive ? 'text-orange-600 bg-orange-100/70' : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
+  }`;
 
 export function Navbar() {
   const { savedTickets } = useTicketWallet();
@@ -12,12 +18,12 @@ export function Navbar() {
     <header className="sticky top-0 z-40 bg-[#FAF8F5]/95 backdrop-blur-md border-b border-stone-200 shadow-xs transition-all">
       {/* Native App-Style Clean Header Bar */}
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-14 sm:h-16">
-          {/* Brand Logo Only */}
+        <div className="flex items-center justify-between gap-2 h-14 sm:h-16">
+          {/* Brand */}
           <Link
             to="/"
             id="header-app-logo"
-            className="flex items-center gap-2 sm:gap-2.5 group"
+            className="flex items-center gap-2 sm:gap-2.5 group shrink-0"
             aria-label="IWACU KIDS Home"
           >
             <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-orange-600 flex items-center justify-center text-white font-black text-base sm:text-lg shadow-sm shadow-orange-600/20 group-hover:scale-105 transition-transform">
@@ -33,9 +39,33 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Clean App Controls: Language Toggle & Get Tickets Button (Strictly minimal for mobile) */}
+          {/* Desktop nav links */}
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Primary">
+            <NavLink to="/" end className={navItemClass}>
+              {t.navHome}
+            </NavLink>
+            <NavLink to="/events" className={navItemClass}>
+              {t.navEvents}
+            </NavLink>
+            <NavLink to="/programs" className={navItemClass}>
+              {t.navPrograms}
+            </NavLink>
+            <NavLink to="/gallery" className={navItemClass}>
+              {t.navGallery}
+            </NavLink>
+            <NavLink to="/about" className={navItemClass}>
+              {t.navAbout}
+            </NavLink>
+            <NavLink to="/location" className={navItemClass}>
+              {t.navLocation}
+            </NavLink>
+          </nav>
+
+          {/* App controls */}
           <div className="flex items-center gap-2 sm:gap-2.5">
-            {/* Quick Language Toggle Pill */}
+            <InstallPWAButton variant="compact" />
+
+            {/* Language toggle */}
             <button
               type="button"
               onClick={toggleLanguage}
@@ -48,7 +78,7 @@ export function Navbar() {
               <span>{isRw ? 'RW' : 'EN'}</span>
             </button>
 
-            {/* My Tickets quick icon (desktop only, to keep mobile strictly minimal) */}
+            {/* My Tickets quick icon (desktop only) */}
             {savedTickets.length > 0 && (
               <Link
                 to="/tickets"
@@ -64,7 +94,7 @@ export function Navbar() {
               </Link>
             )}
 
-            {/* Get Tickets Button */}
+            {/* Get Tickets button */}
             <Link
               to="/events"
               id="header-get-tickets-btn"
@@ -84,4 +114,3 @@ export function Navbar() {
     </header>
   );
 }
-

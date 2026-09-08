@@ -5,7 +5,10 @@ import { LanguageProvider } from './context/LanguageContext';
 import { Navbar } from './components/layout/Navbar';
 import { MobileNavigation } from './components/layout/MobileNavigation';
 import { Footer } from './components/layout/Footer';
-import { HotSupportWidget } from './components/common/HotSupportWidget';
+import { WhatsAppButton } from './components/common/WhatsAppButton';
+import { OfflineBanner } from './components/common/OfflineBanner';
+import { ErrorBoundary } from './components/common/ErrorBoundary';
+import { SocialFollowAd } from './components/social/SocialFollowAd';
 
 // Pages
 import { HomePage } from './pages/HomePage';
@@ -19,6 +22,7 @@ import { GalleryPage } from './pages/GalleryPage';
 import { AboutPage } from './pages/AboutPage';
 import { LocationPage } from './pages/LocationPage';
 import { LoginPage } from './pages/LoginPage';
+import { NotFoundPage } from './pages/NotFoundPage';
 import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { AdminEventsPage } from './pages/admin/AdminEventsPage';
 import { AdminCheckInPage } from './pages/admin/AdminCheckInPage';
@@ -29,42 +33,50 @@ function AppLayout() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-stone-900 selection:bg-orange-500 selection:text-white">
+      {/* Offline notice */}
+      <OfflineBanner />
+
       {/* Top Navigation */}
       <Navbar />
 
       {/* Main Page Content */}
       <main className="flex-1 pb-24 md:pb-0">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/events" element={<EventsPage />} />
-          <Route path="/events/:slug" element={<EventDetailPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/tickets/success/:orderId" element={<TicketSuccessPage />} />
-          <Route path="/tickets" element={<MyTicketsPage />} />
-          <Route path="/programs" element={<ProgramsPage />} />
-          <Route path="/gallery" element={<GalleryPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/location" element={<LocationPage />} />
-          <Route path="/login" element={<LoginPage />} />
+        <ErrorBoundary>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/events" element={<EventsPage />} />
+            <Route path="/events/:slug" element={<EventDetailPage />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/tickets/success/:orderId" element={<TicketSuccessPage />} />
+            <Route path="/tickets" element={<MyTicketsPage />} />
+            <Route path="/programs" element={<ProgramsPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/location" element={<LocationPage />} />
+            <Route path="/login" element={<LoginPage />} />
 
-          {/* Gate Scanner Direct Access */}
-          <Route path="/check-in" element={<AdminCheckInPage />} />
+            {/* Gate Scanner Direct Access */}
+            <Route path="/check-in" element={<AdminCheckInPage />} />
 
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/events" element={<AdminEventsPage />} />
-          <Route path="/admin/check-in" element={<AdminCheckInPage />} />
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/events" element={<AdminEventsPage />} />
+            <Route path="/admin/check-in" element={<AdminCheckInPage />} />
 
-          {/* 404 Fallback */}
-          <Route path="*" element={<HomePage />} />
-        </Routes>
+            {/* 404 Fallback */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </ErrorBoundary>
       </main>
 
       {/* Footer (hidden when on active scanner) */}
       {!isGateScanner && <Footer />}
 
-      {/* Hot Support Hotline Floating Widget (always accessible) */}
-      {!isGateScanner && <HotSupportWidget />}
+      {/* Floating WhatsApp support (always accessible, hidden on scanner) */}
+      {!isGateScanner && <WhatsAppButton />}
+
+      {/* Google-Ads style social follow widget (dismissible, hidden on scanner) */}
+      {!isGateScanner && <SocialFollowAd />}
 
       {/* Native App-like Mobile Bottom Navigation */}
       <MobileNavigation />

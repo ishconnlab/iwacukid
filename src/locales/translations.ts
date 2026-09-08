@@ -234,6 +234,75 @@ export interface Translations {
   loginLiveBadge: string;
   loginTestimonial: string;
   loginTestimonialName: string;
+
+  // PWA install
+  pwaInstall: string;
+  pwaAskTitle: string;
+  pwaAskDesc: string;
+  pwaNoData: string;
+  pwaCancel: string;
+  pwaInstallNow: string;
+  pwaIosTitle: string;
+  pwaIosDesc: string;
+  pwaIosStep: string;
+  pwaIosDone: string;
+
+  // Welcome video
+  videoSectionTitle: string;
+  videoSectionDesc: string;
+  videoPlayBtn: string;
+  videoLoading: string;
+  videoNotAvailable: string;
+
+  // Map & location
+  mapOpenLabel: string;
+  mapDirectionsLabel: string;
+  mapScrollHint: string;
+
+  // Offline state
+  offlineTitle: string;
+  offlineDesc: string;
+
+  // Errors / 404
+  notFoundTitle: string;
+  notFoundDesc: string;
+  error500Title: string;
+  error500Desc: string;
+  backHomeBtn: string;
+  tryAgainBtn: string;
+
+  // Footer & WhatsApp
+  footerBrandDesc: string;
+  quickLinksTitle: string;
+  contactTitle: string;
+  paymentsTitle: string;
+  legalTitle: string;
+  legalPrivacy: string;
+  legalTerms: string;
+  legalTicketPolicy: string;
+  rightsLine: string;
+  followTitle: string;
+  waFloatLabel: string;
+  waHelpTitle: string;
+  waHelpDesc: string;
+  waChatBtn: string;
+  waPrefilled: string;
+
+  // Social follow ad (Google-Ads style)
+  adLabel: string;
+  adTitle: string;
+  adDesc: string;
+  adSubscribeBtn: string;
+  adFollowBtn: string;
+  adListenBtn: string;
+  adCloseLabel: string;
+  adTrustLine: string;
+
+  // Event availability labels
+  eventFeatured: string;
+  eventUpcoming: string;
+  eventLimitedSeats: string;
+  eventSoldOut: string;
 }
 
 export const translations: Record<SupportedLanguage, Translations> = {
@@ -262,7 +331,7 @@ export const translations: Record<SupportedLanguage, Translations> = {
     navGateScanner: 'Kugenzura amatike (QR)',
     navAdmin: 'Ibiro bikuru',
     navStaffLogin: 'Kwinjira kw’abakozi',
-    navGetTickets: 'Gura itike',
+    navGetTickets: 'GURA ITIKE',
 
     // Ticker / Marquee
     marqueeTitle: 'IBIKUNZWE UBU',
@@ -282,7 +351,7 @@ export const translations: Record<SupportedLanguage, Translations> = {
     heroDescription:
       'Menya kandi wamamaze imbyino gakondo z’u Rwanda, imbyino zigezweho, ibiruhuko by’abana n’ubuhanzi i Nyakaliro. Bika itike yawe ya digitale ako kanya ukoresheje MTN MoMo, Airtel Money, cyangwa kode ya USSD.',
     heroExploreBtn: 'Reba ibirori byose',
-    heroBuyTicketsBtn: 'Gura itike none',
+    heroBuyTicketsBtn: 'GURA ITIKE',
     heroTrustQr: 'Kwinjira hakoreshejwe QR Code',
     heroTrustMtn: 'MTN MoMo yemewe',
     heroTrustAirtel: 'Airtel Money yemewe',
@@ -487,6 +556,80 @@ export const translations: Record<SupportedLanguage, Translations> = {
     loginTestimonial:
       '« Nagurishije itike y’umwana wanjye mu isegonda rimwe — gusikana QR ku muryango byaroroshye rwose! »',
     loginTestimonialName: 'Nyirahabimana, Umubyeyi — Nyakaliro',
+
+    // PWA install
+    pwaInstall: 'SHYIRAHO IWACU KIDS',
+    pwaAskTitle: 'Shaka gushyira IWACU KIDS kuri telefoni yawe?',
+    pwaAskDesc:
+      'Uzabona IWACU KIDS imeze nk’app ihoraho, ihita ikora kandi igakomeza akazi na bya bundi bufatanye.',
+    pwaNoData: 'Amakuru y’ubwishyu n’amatike yo abitswa kuri serivisi (server).',
+    pwaCancel: 'Kureka',
+    pwaInstallNow: 'SHYIRAHO',
+    pwaIosTitle: 'Kanda Share → Add to Home Screen',
+    pwaIosDesc:
+      'Kuri iPhone/iPad, fungura Menu yo gusangira (Share) hanyuma uhitemo “Add to Home Screen” kugira ngo IWACU KIDS ibone nk’app ku cyuma cyawe.',
+    pwaIosStep: 'Share → Add to Home Screen',
+    pwaIosDone: 'Ibyiza! IWACU KIDS izaboneka nk’app ku cyuma cyawe.',
+
+    // Welcome video
+    videoSectionTitle: 'MENYA IWACU KIDS',
+    videoSectionDesc:
+      'Reba video ngufi y’ibyiza IWACU KIDS ibyihaye abana n’imiryango i Nyakaliro — imbyino gakondo, ibirori n’ubuhanzi.',
+    videoPlayBtn: 'Bona iyi video',
+    videoLoading: 'Birakoze...',
+    videoNotAvailable: 'Video ntibashije gutangiza muri iki gihe. Ongera ugerageze nyuma.',
+
+    // Map & location
+    mapOpenLabel: 'FUNGURA KU IKARITA',
+    mapDirectionsLabel: 'REBA INZIRA',
+    mapScrollHint: 'Kanda “REBA INZIRA” kugira ngo ukore inzira ihereye aho uri.',
+
+    // Offline state
+    offlineTitle: 'NTA INTERNET — IBIRIMO BIBANZA KUBONEKA NIBA BYARABIKWEYE',
+    offlineDesc:
+      'Amatike yawe yabitswe ku gituntu aracyaboneka. Iyo Internet igarutse, ibindi byose bizasubira.',
+
+    // Errors / 404
+    notFoundTitle: 'URUPAPURO NTIRUBONETSE',
+    notFoundDesc: 'Urupapuro ushaka ntiruboneka cyangwa rwimuwe. Kora ongodera ahantu hakozwe neza.',
+    error500Title: 'HARI IKIBAZO KURI SERIVISI',
+    error500Desc: 'Hari ikibazo gito cyabaye. Ugaruke inyuma hanyuma ugerageze bundi bushoboro.',
+    backHomeBtn: 'SUBIRA KU GIHANDA',
+    tryAgainBtn: 'Ongera ugerageze',
+
+    // Footer & WhatsApp
+    footerBrandDesc:
+      'Urubuga rw’umuco n’ubuhanzi bw’abana i Nyakaliro, u Rwanda. Imbyino gakondo, ibirori n’amatike y’igitanga yemewe.',
+    quickLinksTitle: 'INZIRA ZINGENZI',
+    contactTitle: 'TWANDIKIRE',
+    paymentsTitle: 'UBURYO BW’UKWISHYURA',
+    legalTitle: 'AMATEGEKO',
+    legalPrivacy: 'Policy y’Umutekano w’Amakuru',
+    legalTerms: 'Amasezerano yo gukoresha',
+    legalTicketPolicy: 'Policy y’Amatike',
+    rightsLine: 'IWACU KIDS. Uburenganzira bwose buragizwa. Nyakaliro, u Rwanda.',
+    followTitle: 'DUKURIKIRE',
+    waFloatLabel: 'Twandikire kuri WhatsApp',
+    waHelpTitle: 'Ukeneye ubufasha?',
+    waHelpDesc: 'Ubaza amakuru ku birori cyangwa ku itike? Twandikire kuri WhatsApp.',
+    waChatBtn: 'Tangira Kwandika',
+    waPrefilled: 'Muraho IWACU KIDS, nkeneye amakuru ku birori.',
+
+    // Social follow ad (Google-Ads style)
+    adLabel: 'Urumuri',
+    adTitle: 'Dukurikire IWACU KIDS',
+    adDesc: 'Ntiwanyaze ibitaramo, amafoto n’umuziki!',
+    adSubscribeBtn: 'Kwiyandikisha',
+    adFollowBtn: 'Kurikira',
+    adListenBtn: 'Kumva & Kurikira',
+    adCloseLabel: 'Funga Urumuri',
+    adTrustLine: 'Urumuri rw’ubucuruzi: IWACU KIDS — Nyakaliro, u Rwanda.',
+
+    // Event availability labels
+    eventFeatured: 'ICYEGEZWE',
+    eventUpcoming: 'BIZA VUBA',
+    eventLimitedSeats: 'AMATIKE AHASIGAYE MACYE',
+    eventSoldOut: 'BITANGIRIJE',
   },
   en: {
     // Brand & General
@@ -738,5 +881,79 @@ export const translations: Record<SupportedLanguage, Translations> = {
     loginTestimonial:
       '"I bought my child\'s pass in seconds — scanned the QR at the gate, so easy!"',
     loginTestimonialName: 'Nyirahabimana, Parent — Nyakaliro',
+
+    // PWA install
+    pwaInstall: 'INSTALL IWACU KIDS',
+    pwaAskTitle: 'Install IWACU KIDS on your phone?',
+    pwaAskDesc:
+      'You will get IWACU KIDS as a real app that opens instantly and keeps working even offline.',
+    pwaNoData: 'Payment and ticket data always stays on the server.',
+    pwaCancel: 'CANCEL',
+    pwaInstallNow: 'INSTALL',
+    pwaIosTitle: 'Tap Share → Add to Home Screen',
+    pwaIosDesc:
+      'On iPhone/iPad, open the Share menu and tap “Add to Home Screen” so IWACU KIDS appears like a native app.',
+    pwaIosStep: 'Share → Add to Home Screen',
+    pwaIosDone: 'Done! IWACU KIDS now opens like a native app.',
+
+    // Welcome video
+    videoSectionTitle: 'MEET IWACU KIDS',
+    videoSectionDesc:
+      'A short video about what IWACU KIDS offers children and families in Nyakaliro — traditional dance, festivals and creative arts.',
+    videoPlayBtn: 'Watch Video',
+    videoLoading: 'Loading...',
+    videoNotAvailable: 'The video could not start right now. Please try again later.',
+
+    // Map & location
+    mapOpenLabel: 'OPEN ON MAP',
+    mapDirectionsLabel: 'GET DIRECTIONS',
+    mapScrollHint: 'Tap “GET DIRECTIONS” to get route from your location.',
+
+    // Offline state
+    offlineTitle: 'NO INTERNET — SAVED CONTENT STAYS AVAILABLE',
+    offlineDesc:
+      'Your saved tickets still work. When the connection returns, everything else resumes automatically.',
+
+    // Errors / 404
+    notFoundTitle: 'PAGE NOT FOUND',
+    notFoundDesc: 'The page you are looking for does not exist or was moved. Please navigate somewhere else.',
+    error500Title: 'SERVER ERROR',
+    error500Desc: 'Something went wrong on our side. Please go back and try again in a moment.',
+    backHomeBtn: 'BACK TO HOME',
+    tryAgainBtn: 'Try Again',
+
+    // Footer & WhatsApp
+    footerBrandDesc:
+      'The children & youth culture platform of Nyakaliro, Rwanda. Traditional dance, festivals and verified digital ticketing.',
+    quickLinksTitle: 'QUICK LINKS',
+    contactTitle: 'CONTACT',
+    paymentsTitle: 'PAYMENT METHODS',
+    legalTitle: 'LEGAL',
+    legalPrivacy: 'Privacy Policy',
+    legalTerms: 'Terms of Use',
+    legalTicketPolicy: 'Ticket Policy',
+    rightsLine: 'IWACU KIDS. All rights reserved. Nyakaliro, Rwanda.',
+    followTitle: 'FOLLOW US',
+    waFloatLabel: 'Chat with us on WhatsApp',
+    waHelpTitle: 'Need help?',
+    waHelpDesc: 'Questions about events or tickets? Chat with us on WhatsApp.',
+    waChatBtn: 'START CHAT',
+    waPrefilled: 'Muraho IWACU KIDS, nkeneye amakuru ku birori.',
+
+    // Social follow ad (Google-Ads style)
+    adLabel: 'Ad',
+    adTitle: 'Follow IWACU KIDS',
+    adDesc: 'Never miss a festival, photo, or rhythm!',
+    adSubscribeBtn: 'Subscribe',
+    adFollowBtn: 'Follow',
+    adListenBtn: 'Listen & Follow',
+    adCloseLabel: 'Close ad',
+    adTrustLine: 'Promotional ad by IWACU KIDS — Nyakaliro, Rwanda.',
+
+    // Event availability labels
+    eventFeatured: 'FEATURED',
+    eventUpcoming: 'UPCOMING',
+    eventLimitedSeats: 'LIMITED SEATS',
+    eventSoldOut: 'SOLD OUT',
   },
 };

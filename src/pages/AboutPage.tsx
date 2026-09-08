@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Award, Heart, Sparkles, Users, MapPin, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Award, Heart, Sparkles, Users, MapPin, ShieldCheck, ArrowRight, Mic, Camera, Handshake, Code2, Globe2 } from 'lucide-react';
 
 export function AboutPage() {
   return (
@@ -60,6 +60,73 @@ export function AboutPage() {
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Official Leadership
               </span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Crew & Team */}
+      <section className="space-y-6">
+        <div className="text-center space-y-1">
+          <span className="text-xs font-bold uppercase tracking-wider text-orange-600">
+            Our Crew
+          </span>
+          <h2 className="text-2xl font-black text-stone-900">Meet the Team</h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {/* MC / DJ */}
+          <div className="p-5 rounded-2xl bg-white border border-stone-200 shadow-sm space-y-3 text-center">
+            <div className="mx-auto w-16 h-16 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center shadow-sm">
+              <Mic className="w-7 h-7" />
+            </div>
+            <h3 className="font-extrabold text-base text-stone-900">MC / DJ</h3>
+            <p className="text-xs text-stone-600 leading-relaxed">
+              The voice and rhythm master of the show — keeps kids energized with music, games, and crowd-chanting between performances.
+            </p>
+          </div>
+
+          {/* Photographer */}
+          <div className="p-5 rounded-2xl bg-white border border-stone-200 shadow-sm space-y-3 text-center">
+            <div className="mx-auto w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center shadow-sm">
+              <Camera className="w-7 h-7" />
+            </div>
+            <h3 className="font-extrabold text-base text-stone-900">Photographer</h3>
+            <p className="text-xs text-stone-600 leading-relaxed">
+              Captures every smile, stage move, and family moment so the memories of each IWACU KIDS event live forever.
+            </p>
+          </div>
+
+          {/* Partner */}
+          <div className="p-5 rounded-2xl bg-white border border-stone-200 shadow-sm space-y-3 text-center">
+            <div className="mx-auto w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center shadow-sm">
+              <Handshake className="w-7 h-7" />
+            </div>
+            <h3 className="font-extrabold text-base text-stone-900">Event Partner</h3>
+            <p className="text-xs text-stone-600 leading-relaxed">
+              Sponsors and community partners who help keep ticket prices low and programs accessible for every child in Nyakaliro.
+            </p>
+          </div>
+
+          {/* IshConnect */}
+          <div className="p-5 rounded-2xl bg-white border border-stone-200 shadow-sm space-y-3 text-center">
+            <div className="mx-auto w-16 h-16 rounded-2xl bg-stone-100 text-stone-800 flex items-center justify-center shadow-sm">
+              <Code2 className="w-7 h-7" />
+            </div>
+            <h3 className="font-extrabold text-base text-stone-900">IshConnect</h3>
+            <p className="text-xs text-stone-600 leading-relaxed">
+              The digital partner behind IWACU KIDS — powering online ticketing, secure QR check-in, and the phone app experience from Nyakaliro to the world.
+            </p>
+          </div>
+
+          {/* Silive */}
+          <div className="p-5 rounded-2xl bg-white border border-stone-200 shadow-sm space-y-3 text-center">
+            <div className="mx-auto w-16 h-16 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center shadow-sm">
+              <Globe2 className="w-7 h-7" />
+            </div>
+            <h3 className="font-extrabold text-base text-stone-900">Silive</h3>
+            <p className="text-xs text-stone-600 leading-relaxed">
+              Creative and community partner supporting content, coordination, and joyful outreach for IWACU KIDS events and programs.
+            </p>
           </div>
         </div>
       </section>

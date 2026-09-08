@@ -13,7 +13,19 @@ import {
   GatewayStatus,
 } from '../types';
 
-const API_BASE = '/api';
+// Backend API host. When the frontend is served from the backend itself
+// (Render or local dev), keep same-origin `/api`. When served as a static
+// bundle elsewhere (e.g. Vercel), call the Render API cross-origin.
+const API_HOST = 'https://iwacukid.onrender.com';
+
+function resolveApiBase(): string {
+  const host = typeof window !== 'undefined' ? window.location.hostname : '';
+  const isBackendHost =
+    host === 'iwacukid.onrender.com' || host === 'localhost' || host === '127.0.0.1';
+  return isBackendHost ? '/api' : `${API_HOST}/api`;
+}
+
+const API_BASE = resolveApiBase();
 
 function getAuthHeader(): Record<string, string> {
   const token = localStorage.getItem('iwacu_auth_token');

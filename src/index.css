@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-primary: #ea580c; /* Warm Rwandan Sun Orange */
+    --color-primary-dark: #c2410c;
+    --color-secondary: #1c1917; /* Deep Charcoal */
+    --color-surface: #ffffff;
+    --color-bg: #faf8f5; /* Warm White Sand */
+    --color-muted: #78716c;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-secondary);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Subtle Rwandan Imigongo Cultural Geometry Line */
+.rwandan-pattern-line {
+  background-image: repeating-linear-gradient(
+    45deg,
+    #ea580c 0,
+    #ea580c 10px,
+    #f97316 10px,
+    #f97316 20px,
+    #1c1917 20px,
+    #1c1917 30px
+  );
+  opacity: 0.85;
+}
+
+/* Subtle Chevron Accents for Dividers */
+.cultural-divider {
+  height: 4px;
+  background: linear-gradient(90deg, #ea580c 0%, #d97706 50%, #1c1917 100%);
+  border-radius: 2px;
+}
+
+/* Barcode CSS line simulation */
+.barcode-strip {
+  background: repeating-linear-gradient(
+    90deg,
+    #1c1917,
+    #1c1917 2px,
+    transparent 2px,
+    transparent 4px,
+    #1c1917 4px,
+    #1c1917 7px,
+    transparent 7px,
+    transparent 8px
+  );
+}
+
+/* Custom smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f5f5f4;
+}
+::-webkit-scrollbar-thumb {
+  background: #d6d3d1;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e;
+}
+
+/* Continuous smooth, slow right-to-left sliding ticker animation */
+@keyframes marquee-rtl {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee-rtl {
+  display: flex;
+  width: max-content;
+  animation: marquee-rtl 65s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-rtl:hover,
+.animate-marquee-rtl:active,
+.animate-marquee-rtl:focus-within {
+  animation-play-state: paused;
+}
+

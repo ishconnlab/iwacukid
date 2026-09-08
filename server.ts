@@ -6,12 +6,17 @@ import { apiRouter } from './server/api.js';
 import { connectMongo } from './server/mongo.js';
 import { db } from './server/db.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// `import.meta.url` is only available under ESM (tsx / vite dev). The
+// esbuild CJS bundle gets an empty `import.meta`, so fall back to the
+// current working directory (scripts always run from the project root).
+const SRC_DIR =
+  typeof import.meta !== 'undefined' && import.meta.url
+    ? path.dirname(fileURLToPath(import.meta.url))
+    : process.cwd();
 
 async function startServer() {
   const app = express();
-  const PORT = Number(process.env.PORT) || 3000;
+  const port = Number(process.env.PORT) || 5000;
 
   // Connect to MongoDB Atlas before serving any requests
   const mongoUri = process.env.MONGODB_URI;
@@ -63,15 +68,15 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     // Production mode: Serve built static assets from dist
-    const distPath = path.resolve(__dirname, 'dist');
+    const distPath = path.resolve(SRC_DIR, 'dist');
     app.use(express.static(distPath));
     app.get('*', (_req: Request, res: Response) => {
       res.sendFile(path.resolve(distPath, 'index.html'));
     });
   }
 
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`✨ IWACU Kids Platform running on port ${PORT} (http://localhost:${PORT})`);
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`Server running on port ${port}`);
   });
 }
 

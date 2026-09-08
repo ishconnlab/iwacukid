@@ -148,12 +148,35 @@ let connectionPromise: Promise<typeof mongoose> | null = null;
 export function connectMongo(uri: string): Promise<typeof mongoose> {
   if (connectionPromise) return connectionPromise;
   mongoose.set('strictQuery', false);
-  connectionPromise = mongoose.connect(uri, {
+  connectionPromise = connectWithSrvFallback(uri);
+  return connectionPromise;
+}
+
+async function connectWithSrvFallback(uri: string): Promise<typeof mongoose> {
+  const opts = {
     connectTimeoutMS: 30000,
     serverSelectionTimeoutMS: 30000,
     retryWrites: true,
-  });
-  return connectionPromise;
+  };
+  try {
+    await mongoose.connect(uri, opts);
+    return mongoose;
+  } catch (err) {
+    // Some networks (corporate DNS / VPN) block SRV and TXT lookups that
+    // `mongodb+srv://` requires, while plain A-record resolution still works.
+    // When that happens, fall back to the explicit replica-set URI.
+    const isSrvFailure = err instanceof Error && /querySrv|queryTxt|ENOTFOUND|EAI_AGAIN/.test(err.message);
+    const mirror = process.env.MONGODB_MIRROR_URI;
+    if (isSrvFailure && mirror) {
+      console.warn(`⚠️ SRV DNS lookup failed (${err.message}). Retrying with MONGODB_MIRROR_URI.`);
+      // Reset the cached `$initialConnection` promise or the retry would
+      // just re-throw the original error.
+      await mongoose.disconnect().catch(() => undefined);
+      await mongoose.connect(mirror, opts);
+      return mongoose;
+    }
+    throw err;
+  }
 }
 
 export async function disconnectMongo(): Promise<void> {

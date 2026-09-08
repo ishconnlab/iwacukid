@@ -27,6 +27,7 @@ export function HomePage() {
   const { t } = useLanguage();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [videoFailed, setVideoFailed] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -49,16 +50,36 @@ export function HomePage() {
       {/* HERO SECTION */}
       <section className="relative overflow-hidden pt-4 sm:pt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="relative rounded-3xl bg-stone-900 text-white overflow-hidden border border-stone-800 shadow-2xl">
-          {/* Hero backdrop image */}
+          {/* Hero backdrop video (autoplay, muted, loops) with poster fallback */}
           {featuredEvent && (
             <div className="absolute inset-0 z-0">
-              <img
-                src={featuredEvent.coverImage}
-                alt={featuredEvent.title}
-                className="w-full h-full object-cover"
-                loading="eager"
-                aria-hidden="true"
-              />
+              {!videoFailed && (
+                <video
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  poster={featuredEvent.coverImage}
+                  onError={() => setVideoFailed(true)}
+                  aria-hidden="true"
+                >
+                  <source
+                    src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+                    type="video/mp4"
+                  />
+                </video>
+              )}
+              {videoFailed && (
+                <img
+                  src={featuredEvent.coverImage}
+                  alt={featuredEvent.title}
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                  aria-hidden="true"
+                />
+              )}
             </div>
           )}
 

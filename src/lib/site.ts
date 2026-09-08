@@ -27,6 +27,13 @@ export const SITE = {
     spotify: 'https://open.spotify.com/',
     facebook: 'https://www.facebook.com/',
   },
+  // Partner organisations — replace the placeholder URL with the real site.
+  partners: {
+    ishconnect: {
+      name: 'IshConnect',
+      url: 'https://ishconnect.rw',
+    },
+  },
 } as const;
 
 export function whatsappLink(message: string): string {

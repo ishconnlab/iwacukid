@@ -26,6 +26,9 @@ export interface Translations {
   navAdmin: string;
   navStaffLogin: string;
   navGetTickets: string;
+  navServices: string;
+  navIshConnect: string;
+  brandRegion: string;
 
   // Ticker / Marquee
   marqueeTitle: string;
@@ -332,6 +335,9 @@ export const translations: Record<SupportedLanguage, Translations> = {
     navAdmin: 'Ibiro bikuru',
     navStaffLogin: 'Kwinjira kw’abakozi',
     navGetTickets: 'GURA ITIKE',
+    navServices: 'Serivisi zacu',
+    navIshConnect: 'IshConnect',
+    brandRegion: 'Rwanda • Nyakaliro',
 
     // Ticker / Marquee
     marqueeTitle: 'IBIKUNZWE UBU',
@@ -657,6 +663,9 @@ export const translations: Record<SupportedLanguage, Translations> = {
     navAdmin: 'Admin Portal',
     navStaffLogin: 'Staff Login',
     navGetTickets: 'Get Tickets',
+    navServices: 'Our Services',
+    navIshConnect: 'IshConnect',
+    brandRegion: 'Rwanda • Nyakaliro',
 
     // Ticker / Marquee
     marqueeTitle: 'TRENDING NOW',

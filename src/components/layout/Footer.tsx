@@ -41,7 +41,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-stone-900 text-stone-400 pt-12 sm:pt-16 pb-24 md:pb-12 border-t border-stone-800 select-none">
+    <footer className="hidden md:block bg-stone-900 text-stone-400 pt-12 sm:pt-16 pb-12 border-t border-stone-800 select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 pb-10 sm:pb-12 border-b border-stone-800">
           {/* Brand */}

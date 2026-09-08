@@ -1,13 +1,23 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Pause, Play } from 'lucide-react';
+import { ArrowRight, ExternalLink, Pause, Play } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
+import { SITE } from '../../lib/site';
 
 export function TrendingTicker() {
   const { t, isRw } = useLanguage();
   const [isPaused, setIsPaused] = useState(false);
 
   const tickerItems = t.tickerEvents;
+
+  const sliderItems: {
+    text: string;
+    kind: 'EVENT' | 'SERVICES' | 'PARTNER';
+  }[] = [
+    ...tickerItems.map((text) => ({ text, kind: 'EVENT' as const })),
+    { text: t.navServices, kind: 'SERVICES' as const },
+    { text: `${SITE.partners.ishconnect.name} — ${SITE.partners.ishconnect.url.replace('https://', '')}`, kind: 'PARTNER' as const },
+  ];
 
   return (
     <div
@@ -41,19 +51,36 @@ export function TrendingTicker() {
             }}
           >
             {/* Duplicated list for infinite seamless loop */}
-            {[...tickerItems, ...tickerItems].map((item, idx) => (
-              <Link
-                key={idx}
-                to="/events"
-                className="inline-flex items-center gap-2.5 hover:text-orange-400 transition-colors whitespace-nowrap group py-0.5"
-              >
-                <span className="font-semibold text-white group-hover:text-orange-300">{item}</span>
-                <span className="inline-block px-2 py-0.5 text-[9px] font-black tracking-wider uppercase rounded-md bg-orange-600/20 text-orange-400 border border-orange-500/40 group-hover:bg-orange-600 group-hover:text-white transition-colors">
-                  {isRw ? 'Reba' : 'View'}
-                </span>
-                <span className="text-orange-500/60 mx-1">•</span>
-              </Link>
-            ))}
+            {[...sliderItems, ...sliderItems].map((item, idx) =>
+              item.kind === 'PARTNER' ? (
+                <a
+                  key={idx}
+                  href={SITE.partners.ishconnect.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 hover:text-orange-400 transition-colors whitespace-nowrap group py-0.5"
+                >
+                  <span className="font-semibold text-white group-hover:text-orange-300">{item.text}</span>
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] font-black tracking-wider uppercase rounded-md bg-stone-800 text-orange-400 border border-orange-500/40 hover:bg-orange-600 hover:text-white transition-colors">
+                    {t.navIshConnect}
+                    <ExternalLink className="w-3 h-3" />
+                  </span>
+                  <span className="text-orange-500/60 mx-1">•</span>
+                </a>
+              ) : (
+                <Link
+                  key={idx}
+                  to={item.kind === 'SERVICES' ? '/programs' : '/events'}
+                  className="inline-flex items-center gap-2.5 hover:text-orange-400 transition-colors whitespace-nowrap group py-0.5"
+                >
+                  <span className="font-semibold text-white group-hover:text-orange-300">{item.text}</span>
+                  <span className="inline-block px-2 py-0.5 text-[9px] font-black tracking-wider uppercase rounded-md bg-orange-600/20 text-orange-400 border border-orange-500/40 group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                    {isRw ? 'Reba' : 'View'}
+                  </span>
+                  <span className="text-orange-500/60 mx-1">•</span>
+                </Link>
+              )
+            )}
           </div>
         </div>
 

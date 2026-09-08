@@ -671,9 +671,10 @@ apiRouter.get('/dashboard/overview', requireAuth(['SUPER_ADMIN', 'ADMIN']), asyn
 
   const eventPerformance = events.map((ev) => {
     const evTickets = allTickets.filter((t) => t.eventId === ev.id);
-    const sold = ev.ticketTypes.reduce((acc, t) => acc + (t.soldQuantity || 0), 0);
+    const evPaidOrders = paidOrders.filter((o) => o.eventId === ev.id);
+    const sold = evPaidOrders.reduce((acc, o) => acc + o.quantity, 0);
     const capacity = ev.ticketTypes.reduce((acc, t) => acc + (t.totalQuantity || 0), 0);
-    const revenue = ev.ticketTypes.reduce((acc, t) => acc + (t.soldQuantity || 0) * t.price, 0);
+    const revenue = evPaidOrders.reduce((acc, o) => acc + o.totalAmount, 0);
     const checkedIn = evTickets.filter((t) => t.status === 'USED').length;
 
     return {

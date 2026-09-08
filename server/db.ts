@@ -32,6 +32,7 @@ import {
   recommendationModel,
   auditModel,
   genId,
+  mongoCreate,
 } from './mongo.js';
 import { getInitialSeed } from './seed.js';
 
@@ -188,6 +189,41 @@ class Database {
 
   async getOrdersByUser(userId: string): Promise<TicketOrder[]> {
     return orderModel.find({ customerUserId: userId }).sort({ createdAt: -1 }).lean();
+  }
+
+  // ------------- Pending order lifecycle -------------
+  // Orders left in PENDING (customer abandoned payment) are cancelled after a
+  // grace period: tickets cancelled, capacity released, order marked CANCELLED.
+  async expireStalePendingOrders(maxAgeMs = 30 * 60 * 1000): Promise<number> {
+    const cutoff = new Date(Date.now() - maxAgeMs).toISOString();
+    const staleOrders = await orderModel
+      .find({ paymentStatus: 'PENDING', createdAt: { $lt: cutoff } })
+      .lean();
+    let expired = 0;
+    for (const order of staleOrders) {
+      const paidRefs = await paymentModel.countDocuments({ orderId: order.id, status: 'SUCCESS' });
+      if (paidRefs > 0) {
+        // A webhook already settled this order; it just has not been re-marked yet.
+        await orderModel.updateOne({ id: order.id }, { $set: { paymentStatus: 'SUCCESS', updatedAt: new Date().toISOString() } });
+        await ticketModel.updateMany({ orderId: order.id }, { $set: { status: 'VALID', updatedAt: new Date().toISOString() } });
+        continue;
+      }
+      const nowIso = new Date().toISOString();
+      await orderModel.updateOne({ id: order.id }, { $set: { paymentStatus: 'CANCELLED', updatedAt: nowIso } });
+      await ticketModel.updateMany({ orderId: order.id }, { $set: { status: 'CANCELLED', updatedAt: nowIso } });
+      await eventModel.updateOne(
+        { id: order.eventId },
+        { $inc: { 'ticketTypes.$[t].soldQuantity': -order.quantity } },
+        { arrayFilters: [{ 't.id': order.ticketTypeId }] }
+      );
+      await this.addAuditLog(
+        'ORDER_EXPIRED_NO_PAYMENT',
+        'SYSTEM',
+        `Expired abandoned order ${order.orderNumber} for ${order.eventTitle}; capacity released.`
+      );
+      expired += 1;
+    }
+    return expired;
   }
 
   // ------------- Tickets -------------
@@ -364,7 +400,7 @@ class Database {
       isDefaultPassword: true,
       mustChangePassword: true,
     };
-    await userModel.create(newUser);
+    await mongoCreate(userModel, newUser);
     await this.addAuditLog('SCANNER_CREATED', newUser.email, `Created ${newUser.role} user ${newUser.name}`);
     return { ...newUser, passwordHash: '' };
   }
@@ -438,7 +474,7 @@ class Database {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    await customerModel.create(customer);
+    await mongoCreate(customerModel, customer);
     await this.addAuditLog('CUSTOMER_REGISTERED', customer.phone, `New customer ${customer.fullName} registered.`);
     return customer;
   }
@@ -515,6 +551,14 @@ class Database {
     const ticketType = event.ticketTypes.find((t) => t.id === params.ticketTypeId);
     if (!ticketType) throw new Error('Ticket type not found');
 
+    const openStatuses = ['PUBLISHED', 'SOLD_OUT'];
+    if (!openStatuses.includes(event.status)) {
+      throw new Error('This event is not currently open for bookings.');
+    }
+    if (ticketType.status === 'PAUSED') {
+      throw new Error(`${ticketType.name} is temporarily paused. Please select another ticket type.`);
+    }
+
     const available = ticketType.totalQuantity - (ticketType.soldQuantity || 0);
     if (available < params.quantity) {
       throw new Error(
@@ -575,8 +619,11 @@ class Database {
     const orderNumber = `IWK-${randomHex}`;
     const orderId = genId('ord');
 
-    // Sequential ticket number per event (registration count from 1)
-    const ticketsSold = await ticketModel.countDocuments({ eventId: params.eventId });
+    // Sequential ticket number per event (registration count from 1, only live tickets)
+    const ticketsSold = await ticketModel.countDocuments({
+      eventId: params.eventId,
+      status: { $in: ['VALID', 'USED'] },
+    });
     const settings = await this.getSettings();
     const companyPhone = settings.contactPhone || '+250 788 000 000';
     const eventTime = `${event.startTime} - ${event.endTime}`;
@@ -654,7 +701,7 @@ class Database {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    await orderModel.create(order);
+    await mongoCreate(orderModel, order);
 
     // Mark event SOLD_OUT if fully booked
     const updatedEvent = await this.getEventById(event.id);
@@ -688,6 +735,16 @@ class Database {
   }): Promise<PaymentTransaction> {
     const order = await this.getOrderById(params.orderId);
     if (!order) throw new Error(`Order ${params.orderId} not found for payment processing`);
+    const nowIso = new Date().toISOString();
+
+    // Idempotency: never process the same provider transaction reference twice.
+    const existingByRef = await paymentModel.findOne({
+      orderId: order.id,
+      transactionRef: params.transactionRef,
+    });
+    if (existingByRef) {
+      return existingByRef.toObject() as PaymentTransaction;
+    }
 
     const paymentTx: PaymentTransaction = {
       id: genId('pay'),
@@ -702,25 +759,56 @@ class Database {
       mode: params.mode,
       errorMessage: params.errorMessage,
       rawWebhookData: params.rawWebhookData,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: nowIso,
+      updatedAt: nowIso,
     };
-    await paymentModel.create(paymentTx);
+    await mongoCreate(paymentModel, paymentTx);
 
-    // Update order status
-    await orderModel.updateOne(
-      { id: order.id },
-      { $set: { paymentStatus: params.status, paymentTransactionRef: params.transactionRef, updatedAt: new Date().toISOString() } }
-    );
+    const alreadySettled = order.paymentStatus === 'SUCCESS';
+    // Capacity is still held (soldQuantity incremented) unless a FAILED payment already reverted it.
+    const capacityHeld = order.paymentStatus !== 'FAILED';
 
-    if (params.status === 'FAILED') {
-      // Revert sold quantity
-      await eventModel.updateOne(
-        { id: order.eventId },
-        { $inc: { 'ticketTypes.$[t].soldQuantity': -order.quantity } },
-        { arrayFilters: [{ 't.id': order.ticketTypeId }] }
-      );
-      await ticketModel.updateMany({ orderId: order.id }, { $set: { status: 'CANCELLED', updatedAt: new Date().toISOString() } });
+    if (params.status === 'SUCCESS') {
+      if (!alreadySettled) {
+        // Settle the order: promote order + tickets, re-hold capacity if it was reverted on a prior failure.
+        await ticketModel.updateMany({ orderId: order.id }, { $set: { status: 'VALID', updatedAt: nowIso } });
+        if (!capacityHeld) {
+          await eventModel.updateOne(
+            { id: order.eventId },
+            { $inc: { 'ticketTypes.$[t].soldQuantity': order.quantity } },
+            { arrayFilters: [{ 't.id': order.ticketTypeId }] }
+          );
+        }
+        await orderModel.updateOne(
+          { id: order.id },
+          { $set: { paymentStatus: 'SUCCESS', paymentTransactionRef: params.transactionRef, updatedAt: nowIso } }
+        );
+        if (order.recommendationCode) {
+          await recommendationModel.updateOne({ code: order.recommendationCode }, { $inc: { usageCount: 1 } });
+        }
+        const refreshedEvent = await this.getEventById(order.eventId);
+        if (refreshedEvent) {
+          const totalCapacity = refreshedEvent.ticketTypes.reduce((a, t) => a + (t.totalQuantity || 0), 0);
+          const totalSold = refreshedEvent.ticketTypes.reduce((a, t) => a + (t.soldQuantity || 0), 0);
+          if (totalSold >= totalCapacity && totalCapacity > 0 && refreshedEvent.status !== 'SOLD_OUT') {
+            await eventModel.updateOne({ id: order.eventId }, { $set: { status: 'SOLD_OUT' } });
+          }
+        }
+      }
+    } else if (params.status === 'FAILED') {
+      // Only revert capacity when the order has not settled and has not already been reverted.
+      if (!alreadySettled && capacityHeld) {
+        await orderModel.updateOne(
+          { id: order.id },
+          { $set: { paymentStatus: 'FAILED', paymentTransactionRef: params.transactionRef, updatedAt: nowIso } }
+        );
+        await eventModel.updateOne(
+          { id: order.eventId },
+          { $inc: { 'ticketTypes.$[t].soldQuantity': -order.quantity } },
+          { arrayFilters: [{ 't.id': order.ticketTypeId }] }
+        );
+        await ticketModel.updateMany({ orderId: order.id }, { $set: { status: 'CANCELLED', updatedAt: nowIso } });
+      }
     }
 
     await this.addAuditLog(
@@ -752,7 +840,7 @@ class Database {
     );
     await ticketModel.updateMany({ orderId: order.id }, { $set: { status: 'VALID' } });
 
-    await paymentModel.create({
+    await mongoCreate(paymentModel, {
       id: genId('pay'),
       orderId: order.id,
       provider: 'MANUAL_USSD',
@@ -765,6 +853,9 @@ class Database {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
+    if (order.recommendationCode) {
+      await recommendationModel.updateOne({ code: order.recommendationCode }, { $inc: { usageCount: 1 } });
+    }
     await this.addAuditLog('USSD_PAYMENT_SUBMITTED', params.customerPhone, `Order ${order.orderNumber} paid via USSD reference ${params.transactionRef}`);
     return { order: (await this.getOrderById(order.id))!, tickets: await ticketModel.find({ orderId: order.id }).lean() };
   }
@@ -861,7 +952,7 @@ class Database {
       status: 'SUCCESS',
       notes: `Verified and admitted. Check-in #${checkInNumber} for this event.`,
     };
-    await checkinModel.create(record);
+    await mongoCreate(checkinModel, record);
     await this.addAuditLog('TICKET_CHECK_IN', params.scannedBy, `Admitted ${ticket.attendeeName} (${ticket.ticketCode}) as #${checkInNumber} for ${ticket.eventTitle}`);
 
     return { status: 'SUCCESS', message: 'Valid ticket. Welcome to IWACU Kids!', ticket: updatedTicket };
@@ -875,7 +966,7 @@ class Database {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    await eventModel.create(newEvent);
+    await mongoCreate(eventModel, newEvent);
     await this.addAuditLog('EVENT_CREATED', 'Admin', `Created event ${newEvent.title}`);
     return newEvent;
   }
@@ -931,7 +1022,7 @@ class Database {
   // ------------- Gallery & Programs admin -------------
   async addGalleryItem(item: Omit<GalleryItem, 'id' | 'createdAt'>): Promise<GalleryItem> {
     const newItem: GalleryItem = { ...item, id: genId('gal'), createdAt: new Date().toISOString() };
-    await galleryModel.create(newItem);
+    await mongoCreate(galleryModel, newItem);
     return newItem;
   }
 
@@ -942,7 +1033,7 @@ class Database {
 
   async addProgram(prog: Omit<Program, 'id' | 'createdAt'>): Promise<Program> {
     const newProg: Program = { ...prog, id: genId('prog'), createdAt: new Date().toISOString() };
-    await programModel.create(newProg);
+    await mongoCreate(programModel, newProg);
     return newProg;
   }
 
@@ -977,7 +1068,7 @@ class Database {
   // ------------- Audit -------------
   async addAuditLog(action: string, actor: string, details: string): Promise<void> {
     try {
-      await auditModel.create({
+      await mongoCreate(auditModel, {
         id: genId('log'),
         action,
         actor,

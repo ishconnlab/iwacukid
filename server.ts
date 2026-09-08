@@ -27,6 +27,23 @@ async function startServer() {
   await db.seedDatabaseIfEmpty();
   console.log('✅ MongoDB connected');
 
+  // Household/pending-order lifecycle: expire abandoned orders shortly after boot
+  // and on a rolling cadence so capacity is never silently locked.
+  try {
+    const expired = await db.expireStalePendingOrders();
+    if (expired > 0) console.log(`♻️ Expired ${expired} stale pending order(s)`);
+  } catch (err) {
+    console.error('Failed to run pending-order expiry at boot:', err);
+  }
+  const orderExpiryTimer = setInterval(async () => {
+    try {
+      await db.expireStalePendingOrders();
+    } catch (err) {
+      console.error('Failed to run pending-order expiry:', err);
+    }
+  }, 10 * 60 * 1000);
+  orderExpiryTimer.unref();
+
   // JSON Body Parser with security limits
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true }));

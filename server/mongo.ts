@@ -12,6 +12,11 @@ export function genId(prefix: string): string {
   return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+export async function mongoCreate(model: any, doc: any): Promise<any> {
+  const [inserted] = await model.insertMany([doc]);
+  return inserted;
+}
+
 const baseOpts = { _id: false, strict: false } as const;
 const pk = {
   id: { type: String, required: true, unique: true, index: true },

@@ -11,6 +11,8 @@ import {
   Users,
   Award,
   ChevronRight,
+  QrCode,
+  CreditCard,
 } from 'lucide-react';
 import { Event } from '../types';
 import { api } from '../api/client';
@@ -24,6 +26,7 @@ export function HomePage() {
   const { t } = useLanguage();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
+  const [videoFailed, setVideoFailed] = useState(false);
 
   useEffect(() => {
     async function load() {
@@ -46,13 +49,35 @@ export function HomePage() {
       {/* HERO SECTION */}
       <section className="relative overflow-hidden pt-4 sm:pt-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="relative rounded-3xl bg-stone-900 text-white overflow-hidden border border-stone-800 shadow-2xl">
+          {/* Hero playback video (autoplay, muted, loops) */}
+          {!videoFailed && featuredEvent && (
+            <div className="absolute inset-0 z-0">
+              <video
+                className="w-full h-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster={featuredEvent.coverImage}
+                onError={() => setVideoFailed(true)}
+                aria-hidden="true"
+              >
+                <source
+                  src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"
+                  type="video/mp4"
+                />
+              </video>
+            </div>
+          )}
+
           {/* Subtle Cultural Pattern Background */}
           <div className="absolute inset-0 opacity-15 rwandan-pattern-line pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-900/90 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/85 to-stone-900/60 z-10" />
 
           {/* Floating decorative particles */}
-          <div className="pointer-events-none absolute top-8 right-10 w-20 h-20 rounded-full bg-orange-500/20 blur-2xl animate-float z-10" />
-          <div className="pointer-events-none absolute bottom-16 left-6 w-28 h-28 rounded-full bg-amber-400/10 blur-2xl animate-float z-10" style={{ animationDelay: '1.8s' }} />
+          <div className="pointer-events-none absolute top-8 right-10 w-24 h-24 rounded-full bg-orange-500/20 blur-3xl animate-aurora z-10" />
+          <div className="pointer-events-none absolute bottom-16 left-6 w-28 h-28 rounded-full bg-amber-400/10 blur-3xl animate-aurora z-10" style={{ animationDelay: '1.8s' }} />
 
           {/* Hero Content Grid */}
           <div className="relative z-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-6 sm:p-10 lg:p-14">
@@ -70,7 +95,7 @@ export function HomePage() {
                 </span>
                 <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-none">
                   {t.heroTitleLine1} <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-amber-300">
+                  <span className="text-shine">
                     {t.heroTitleHighlight}
                   </span>
                 </h1>
@@ -211,75 +236,125 @@ export function HomePage() {
         </section>
       </Reveal>
 
+      {/* HOW IT WORKS */}
+      <Reveal>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          <div className="text-center space-y-2 mx-auto max-w-2xl">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-orange-600/15 border border-orange-500/30 text-orange-700 text-[10px] font-black uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5" />
+              {t.howItWorksEyebrow}
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">
+              {t.howItWorksTitle}
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-500 max-w-xl mx-auto leading-relaxed">
+              {t.howItWorksDesc}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            {[
+              { icon: Calendar, title: t.stepPickTitle, desc: t.stepPickDesc, step: '01' },
+              { icon: CreditCard, title: t.stepPayTitle, desc: t.stepPayDesc, step: '02' },
+              { icon: QrCode, title: t.stepJoinTitle, desc: t.stepJoinDesc, step: '03' },
+            ].map((s) => (
+              <div
+                key={s.step}
+                className="relative group p-6 rounded-3xl bg-white border border-stone-200/90 hover:border-orange-500/60 hover:shadow-xl transition-all overflow-hidden"
+              >
+                <span className="absolute -top-4 -right-2 text-7xl font-black text-stone-100 group-hover:text-orange-100 transition-colors select-none">
+                  {s.step}
+                </span>
+                <div className="relative w-12 h-12 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform">
+                  <s.icon className="w-6 h-6" />
+                </div>
+                <h3 className="relative mt-4 font-extrabold text-sm sm:text-base text-stone-900">
+                  {s.title}
+                </h3>
+                <p className="relative mt-1.5 text-xs text-stone-500 leading-relaxed">
+                  {s.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </Reveal>
+
       {/* SWIPEABLE TRENDING EVENTS SLIDER (AUTOMATIC RIGHT-TO-LEFT) */}
       <TrendingEventsSlider events={events} />
 
       {/* QUICK CATEGORY CHIPS */}
-      <Reveal>
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-          <Link
-            to="/events?category=traditional-dance"
-            className="p-4 rounded-2xl bg-white border border-stone-200/90 hover:border-orange-500 hover:shadow-md transition-all group flex items-center gap-3"
-          >
-            <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-              <Music className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="font-bold text-xs sm:text-sm text-stone-900 group-hover:text-orange-600">
-                {t.catTraditional}
-              </h4>
-              <span className="text-[11px] text-stone-500">{t.catTraditionalSub}</span>
-            </div>
-          </Link>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          <Reveal delay={0} className="h-full">
+            <Link
+              to="/events?category=traditional-dance"
+              className="h-full p-4 rounded-2xl bg-white border border-stone-200/90 hover:border-orange-500 hover:shadow-md transition-all group flex items-center gap-3"
+            >
+              <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold group-hover:scale-110 group-hover:-rotate-6 transition-transform">
+                <Music className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <h4 className="font-bold text-xs sm:text-sm text-stone-900 group-hover:text-orange-600">
+                  {t.catTraditional}
+                </h4>
+                <span className="text-[11px] text-stone-500 block truncate">{t.catTraditionalSub}</span>
+              </div>
+            </Link>
+          </Reveal>
 
-          <Link
-            to="/events?category=modern-dance"
-            className="p-4 rounded-2xl bg-white border border-stone-200/90 hover:border-orange-500 hover:shadow-md transition-all group flex items-center gap-3"
-          >
-            <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-              <Sparkles className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="font-bold text-xs sm:text-sm text-stone-900 group-hover:text-orange-600">
-                {t.catModern}
-              </h4>
-              <span className="text-[11px] text-stone-500">{t.catModernSub}</span>
-            </div>
-          </Link>
+          <Reveal delay={1} className="h-full">
+            <Link
+              to="/events?category=modern-dance"
+              className="h-full p-4 rounded-2xl bg-white border border-stone-200/90 hover:border-orange-500 hover:shadow-md transition-all group flex items-center gap-3"
+            >
+              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold group-hover:scale-110 group-hover:-rotate-6 transition-transform">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <h4 className="font-bold text-xs sm:text-sm text-stone-900 group-hover:text-orange-600">
+                  {t.catModern}
+                </h4>
+                <span className="text-[11px] text-stone-500 block truncate">{t.catModernSub}</span>
+              </div>
+            </Link>
+          </Reveal>
 
-          <Link
-            to="/events?category=summer-events"
-            className="p-4 rounded-2xl bg-white border border-stone-200/90 hover:border-orange-500 hover:shadow-md transition-all group flex items-center gap-3"
-          >
-            <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-              <Sun className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="font-bold text-xs sm:text-sm text-stone-900 group-hover:text-orange-600">
-                {t.catSummer}
-              </h4>
-              <span className="text-[11px] text-stone-500">{t.catSummerSub}</span>
-            </div>
-          </Link>
+          <Reveal delay={2} className="h-full">
+            <Link
+              to="/events?category=summer-events"
+              className="h-full p-4 rounded-2xl bg-white border border-stone-200/90 hover:border-orange-500 hover:shadow-md transition-all group flex items-center gap-3"
+            >
+              <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-bold group-hover:scale-110 group-hover:-rotate-6 transition-transform">
+                <Sun className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <h4 className="font-bold text-xs sm:text-sm text-stone-900 group-hover:text-orange-600">
+                  {t.catSummer}
+                </h4>
+                <span className="text-[11px] text-stone-500 block truncate">{t.catSummerSub}</span>
+              </div>
+            </Link>
+          </Reveal>
 
-          <Link
-            to="/programs"
-            className="p-4 rounded-2xl bg-white border border-stone-200/90 hover:border-orange-500 hover:shadow-md transition-all group flex items-center gap-3"
-          >
-            <div className="w-10 h-10 rounded-xl bg-stone-100 text-stone-700 flex items-center justify-center font-bold group-hover:scale-110 transition-transform">
-              <Users className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="font-bold text-xs sm:text-sm text-stone-900 group-hover:text-orange-600">
-                {t.catVacation}
-              </h4>
-              <span className="text-[11px] text-stone-500">{t.catVacationSub}</span>
-            </div>
-          </Link>
+          <Reveal delay={3} className="h-full">
+            <Link
+              to="/programs"
+              className="h-full p-4 rounded-2xl bg-white border border-stone-200/90 hover:border-orange-500 hover:shadow-md transition-all group flex items-center gap-3"
+            >
+              <div className="w-10 h-10 rounded-xl bg-stone-100 text-stone-700 flex items-center justify-center font-bold group-hover:scale-110 group-hover:-rotate-6 transition-transform">
+                <Users className="w-5 h-5" />
+              </div>
+              <div className="min-w-0">
+                <h4 className="font-bold text-xs sm:text-sm text-stone-900 group-hover:text-orange-600">
+                  {t.catVacation}
+                </h4>
+                <span className="text-[11px] text-stone-500 block truncate">{t.catVacationSub}</span>
+              </div>
+            </Link>
+          </Reveal>
         </div>
-        </section>
-      </Reveal>
+      </section>
 
       {/* INTERACTIVE IMAGES SPOTLIGHT (CULTURAL DISCOVERY & SOUNDS) */}
       <Reveal>

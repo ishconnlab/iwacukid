@@ -216,6 +216,24 @@ export interface Translations {
   staffAccessDesc: string;
   staffAccessBtn: string;
   staffAccessNote: string;
+
+  // Landing: How It Works
+  howItWorksEyebrow: string;
+  howItWorksTitle: string;
+  howItWorksDesc: string;
+  stepPickTitle: string;
+  stepPickDesc: string;
+  stepPayTitle: string;
+  stepPayDesc: string;
+  stepJoinTitle: string;
+  stepJoinDesc: string;
+
+  // Login split-screen panel
+  loginSideTitle: string;
+  loginSideDesc: string;
+  loginLiveBadge: string;
+  loginTestimonial: string;
+  loginTestimonialName: string;
 }
 
 export const translations: Record<SupportedLanguage, Translations> = {
@@ -445,6 +463,30 @@ export const translations: Record<SupportedLanguage, Translations> = {
     staffAccessDesc: 'Kwinjira, kugenzura amatike (QR verification) n’ubuyobozi bisabwa ku bipindi bya Admin / Gate pejini.',
     staffAccessBtn: 'Injira ku Irembo rya Gate / Admin',
     staffAccessNote: 'Kode zo kwinjira n’uburenganzira bwo gusikana ntiboneka kuri iyi pejini.',
+
+    // Landing: How It Works
+    howItWorksEyebrow: 'UBURYO BIKORA',
+    howItWorksTitle: 'Injira wowe n’umuryango wawe mu ntambwe eshatu',
+    howItWorksDesc:
+      'Kuva guhitamo igitaramo kugeza ku kugenzura kwa QR ku muryango — byose bikorwa kuri telefone yawe.',
+    stepPickTitle: 'Hitamo igitaramo',
+    stepPickDesc:
+      'Sura ibirori biri imbere maze uhitame ubwoko bw’amatike buhuye n’umuryango wawe.',
+    stepPayTitle: 'Wishyure MoMo cyangwa Airtel',
+    stepPayDesc:
+      'MTN MoMo, Airtel Money cyangwa kode ya USSD — kwemeza kuzza ako kanya.',
+    stepJoinTitle: 'Erekana itike yawe ya QR',
+    stepJoinDesc:
+      'Itike yawe idoda ku muryango mu kugenzura kwa QR kw’isegonda rimwe.',
+
+    // Login split-screen panel
+    loginSideTitle: 'Amatike yawe yo kwishora, aboneka mu isegonda',
+    loginSideDesc:
+      'Injira ngo ubone amatike yawe, kode yawe yo kuramutsa abandi n’amatike ya QR — byose ahantu hamwe.',
+    loginLiveBadge: 'Irembo rikora ku birori bya Nyakaliro',
+    loginTestimonial:
+      '« Nagurishije itike y’umwana wanjye mu isegonda rimwe — gusikana QR ku muryango byaroroshye rwose! »',
+    loginTestimonialName: 'Nyirahabimana, Umubyeyi — Nyakaliro',
   },
   en: {
     // Brand & General
@@ -674,5 +716,27 @@ export const translations: Record<SupportedLanguage, Translations> = {
       'Login, QR ticket verification, and event management are handled on the secured Admin / Gate pages only.',
     staffAccessBtn: 'Open Gate / Admin Sign-In',
     staffAccessNote: 'Staff verification codes and scanner clearance are never shown on this page.',
+
+    // Landing: How It Works
+    howItWorksEyebrow: 'HOW IT WORKS',
+    howItWorksTitle: 'Your family gets in, in three easy steps',
+    howItWorksDesc:
+      'From picking an event to scanning your QR at the gate — it all happens on your phone.',
+    stepPickTitle: 'Pick an event',
+    stepPickDesc:
+      'Browse upcoming celebrations and choose the pass tier that fits your family.',
+    stepPayTitle: 'Pay with MoMo or Airtel',
+    stepPayDesc: 'MTN MoMo, Airtel Money, or manual USSD. Verified instantly.',
+    stepJoinTitle: 'Show your QR pass',
+    stepJoinDesc: 'Your digital ticket opens the gate with a one-second QR check-in.',
+
+    // Login split-screen panel
+    loginSideTitle: 'Your family passes, ready in seconds',
+    loginSideDesc:
+      'Sign in to view your tickets, referral code, and QR passes — all in one place.',
+    loginLiveBadge: 'Live portal for Nyakaliro celebrations',
+    loginTestimonial:
+      '"I bought my child\'s pass in seconds — scanned the QR at the gate, so easy!"',
+    loginTestimonialName: 'Nyirahabimana, Parent — Nyakaliro',
   },
 };

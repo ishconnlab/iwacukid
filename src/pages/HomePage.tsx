@@ -17,6 +17,7 @@ import { api } from '../api/client';
 import { EventCard } from '../components/events/EventCard';
 import { TrendingEventsSlider } from '../components/home/TrendingEventsSlider';
 import { InteractiveKidsShowcase } from '../components/home/InteractiveKidsShowcase';
+import { Reveal } from '../components/common/Reveal';
 import { useLanguage } from '../context/LanguageContext';
 
 export function HomePage() {
@@ -49,17 +50,21 @@ export function HomePage() {
           <div className="absolute inset-0 opacity-15 rwandan-pattern-line pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-900/90 to-transparent z-10" />
 
+          {/* Floating decorative particles */}
+          <div className="pointer-events-none absolute top-8 right-10 w-20 h-20 rounded-full bg-orange-500/20 blur-2xl animate-float z-10" />
+          <div className="pointer-events-none absolute bottom-16 left-6 w-28 h-28 rounded-full bg-amber-400/10 blur-2xl animate-float z-10" style={{ animationDelay: '1.8s' }} />
+
           {/* Hero Content Grid */}
           <div className="relative z-20 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-6 sm:p-10 lg:p-14">
             <div className="lg:col-span-7 space-y-5">
               {/* Eyebrow badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-600/20 border border-orange-500/40 text-orange-400 text-xs font-bold uppercase tracking-wider">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-600/20 border border-orange-500/40 text-orange-400 text-xs font-bold uppercase tracking-wider animate-fade-up">
                 <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
                 <span>{t.heroEyebrow}</span>
               </div>
 
               {/* Display Heading */}
-              <div className="space-y-1">
+              <div className="space-y-1 animate-fade-up" style={{ animationDelay: '0.1s' }}>
                 <span className="text-xs sm:text-sm font-extrabold tracking-widest uppercase text-stone-400 block">
                   {t.brandName}
                 </span>
@@ -71,15 +76,20 @@ export function HomePage() {
                 </h1>
               </div>
 
-              <p className="text-stone-300 text-xs sm:text-sm lg:text-base max-w-xl leading-relaxed">
+              {/* Subtitle tagline */}
+              <p className="text-[11px] sm:text-xs font-black uppercase tracking-[0.22em] text-amber-300/90 animate-fade-up" style={{ animationDelay: '0.18s' }}>
+                {t.heroSubtitleTag}
+              </p>
+
+              <p className="text-stone-300 text-xs sm:text-sm lg:text-base max-w-xl leading-relaxed animate-fade-up" style={{ animationDelay: '0.26s' }}>
                 {t.heroDescription}
               </p>
 
               {/* Action Buttons */}
-              <div className="pt-2 flex flex-wrap items-center gap-3">
+              <div className="pt-2 flex flex-wrap items-center gap-3 animate-fade-up" style={{ animationDelay: '0.34s' }}>
                 <Link
                   to="/events"
-                  className="px-6 py-3.5 bg-orange-600 hover:bg-orange-500 active:bg-orange-700 text-white text-xs sm:text-sm font-extrabold rounded-2xl shadow-lg shadow-orange-600/30 transition-all flex items-center gap-2 min-h-[48px]"
+                  className="px-6 py-3.5 bg-orange-600 hover:bg-orange-500 active:bg-orange-700 active:scale-95 text-white text-xs sm:text-sm font-extrabold rounded-2xl shadow-lg shadow-orange-600/30 transition-all flex items-center gap-2 min-h-[48px]"
                 >
                   <Sparkles className="w-4 h-4" />
                   <span>{t.heroExploreBtn}</span>
@@ -87,7 +97,7 @@ export function HomePage() {
 
                 <Link
                   to="/checkout"
-                  className="px-6 py-3.5 bg-stone-800/90 hover:bg-stone-700 text-stone-200 text-xs sm:text-sm font-bold rounded-2xl border border-stone-700 transition-all flex items-center gap-2 min-h-[48px]"
+                  className="px-6 py-3.5 bg-stone-800/90 hover:bg-stone-700 active:scale-95 text-stone-200 text-xs sm:text-sm font-bold rounded-2xl border border-stone-700 transition-all flex items-center gap-2 min-h-[48px]"
                 >
                   <span>{t.heroBuyTicketsBtn}</span>
                   <ArrowRight className="w-4 h-4" />
@@ -95,7 +105,7 @@ export function HomePage() {
               </div>
 
               {/* Trust Indicators */}
-              <div className="pt-4 border-t border-stone-800/80 flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-stone-400">
+              <div className="pt-4 border-t border-stone-800/80 flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-stone-400 animate-fade-up" style={{ animationDelay: '0.42s' }}>
                 <div className="flex items-center gap-1.5 font-semibold">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
                   <span>{t.heroTrustQr}</span>
@@ -117,8 +127,8 @@ export function HomePage() {
 
             {/* Featured Hero Card Showcase */}
             {featuredEvent && (
-              <div className="lg:col-span-5">
-                <div className="relative rounded-2xl overflow-hidden bg-stone-800/80 border border-stone-700/80 shadow-2xl p-4 sm:p-5 backdrop-blur-sm">
+              <div className="lg:col-span-5 animate-fade-up" style={{ animationDelay: '0.3s' }}>
+                <div className="relative rounded-2xl overflow-hidden bg-stone-800/80 border border-stone-700/80 shadow-2xl p-4 sm:p-5 backdrop-blur-sm hover:border-orange-500/60 transition-colors group">
                   <div className="flex items-center justify-between pb-3">
                     <span className="text-[11px] font-extrabold uppercase tracking-wider text-orange-400 flex items-center gap-1">
                       <Sparkles className="w-3.5 h-3.5" /> {t.heroNextEvent}
@@ -130,7 +140,7 @@ export function HomePage() {
                     <img
                       src={featuredEvent.coverImage}
                       alt={featuredEvent.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                     <div className="absolute bottom-3 left-3 right-3 text-white">
@@ -172,12 +182,42 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* QUICK STATS STRIP */}
+      <Reveal>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            {[
+              { icon: Calendar, label: t.landingStatsEvents, value: '40+' },
+              { icon: Users, label: t.landingStatsMembers, value: '2,000+' },
+              { icon: Sparkles, label: t.landingStatsSessions, value: '120+' },
+              { icon: MapPin, label: t.landingStatsVenue, value: '100%' },
+            ].map((s, i) => (
+              <div
+                key={i}
+                className="p-4 rounded-2xl bg-white border border-stone-200/90 hover:border-orange-500/60 hover:shadow-md transition-all flex items-center gap-3"
+              >
+                <div className="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center font-black shrink-0">
+                  <s.icon className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-lg font-black text-stone-900 block leading-none">{s.value}</span>
+                  <span className="text-[11px] text-stone-500 leading-tight block truncate">
+                    {s.label}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </Reveal>
+
       {/* SWIPEABLE TRENDING EVENTS SLIDER (AUTOMATIC RIGHT-TO-LEFT) */}
       <TrendingEventsSlider events={events} />
 
       {/* QUICK CATEGORY CHIPS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+      <Reveal>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           <Link
             to="/events?category=traditional-dance"
             className="p-4 rounded-2xl bg-white border border-stone-200/90 hover:border-orange-500 hover:shadow-md transition-all group flex items-center gap-3"
@@ -238,14 +278,18 @@ export function HomePage() {
             </div>
           </Link>
         </div>
-      </section>
+        </section>
+      </Reveal>
 
       {/* INTERACTIVE IMAGES SPOTLIGHT (CULTURAL DISCOVERY & SOUNDS) */}
-      <InteractiveKidsShowcase />
+      <Reveal>
+        <InteractiveKidsShowcase />
+      </Reveal>
 
       {/* UPCOMING EVENTS DISCOVERY */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+      <Reveal>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-orange-600">
               {t.brandTagline}
@@ -264,25 +308,29 @@ export function HomePage() {
         </div>
 
         {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((n) => (
-              <div
-                key={n}
-                className="h-80 rounded-2xl bg-stone-200/70 animate-pulse"
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {events.slice(0, 6).map((evt) => (
-              <EventCard key={evt.id} event={evt} featured={evt.featured} />
-            ))}
-          </div>
-        )}
-      </section>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[1, 2, 3].map((n) => (
+                <div
+                  key={n}
+                  className="h-80 rounded-2xl bg-stone-200/70 animate-pulse"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {events.slice(0, 6).map((evt, i) => (
+                <div key={evt.id}>
+                  <EventCard event={evt} featured={evt.featured} />
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      </Reveal>
 
       {/* LEADERSHIP & BRAND PHILOSOPHY BANNER */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Reveal>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="rounded-3xl bg-stone-900 text-white p-8 sm:p-12 lg:p-14 border border-stone-800 relative overflow-hidden">
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-8 space-y-4">
@@ -327,7 +375,8 @@ export function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </Reveal>
     </div>
   );
 }

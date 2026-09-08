@@ -170,6 +170,52 @@ export interface Translations {
   adminClearanceApproved: string;
   adminClearanceRevoked: string;
   adminAddScannerHelper: string;
+
+  // Landing extras
+  heroSubtitleTag: string;
+  landingStatsEvents: string;
+  landingStatsMembers: string;
+  landingStatsSessions: string;
+  landingStatsVenue: string;
+
+  // Login & Register (customer account)
+  loginBadge: string;
+  loginTitle: string;
+  loginSubtitle: string;
+  loginTabSignIn: string;
+  loginTabRegister: string;
+  loginIdentifierLabel: string;
+  loginIdentifierPlaceholder: string;
+  loginPasswordLabel: string;
+  loginPasswordPlaceholder: string;
+  loginHint: string;
+  loginSignInBtn: string;
+  loginSigningIn: string;
+  loginBackHome: string;
+  registerFullNameLabel: string;
+  registerFullNamePlaceholder: string;
+  registerPhoneLabel: string;
+  registerPhonePlaceholder: string;
+  registerEmailLabel: string;
+  registerEmailPlaceholder: string;
+  registerPasswordLabel: string;
+  registerPasswordHint: string;
+  registerConfirmLabel: string;
+  registerConfirmPlaceholder: string;
+  registerBenefitTitle: string;
+  registerBenefitQr: string;
+  registerBenefitCode: string;
+  registerBenefitInstant: string;
+  registerBtn: string;
+  registerCreating: string;
+  registerPasswordMismatch: string;
+  registerFieldMissing: string;
+  passwordShow: string;
+  passwordHide: string;
+  staffAccessTitle: string;
+  staffAccessDesc: string;
+  staffAccessBtn: string;
+  staffAccessNote: string;
 }
 
 export const translations: Record<SupportedLanguage, Translations> = {
@@ -353,6 +399,52 @@ export const translations: Record<SupportedLanguage, Translations> = {
     adminClearanceApproved: 'Uburenganzira bwemejwe',
     adminClearanceRevoked: 'Uburenganzira bwavanyweho',
     adminAddScannerHelper: 'Ongeraho umufasha ku muryango',
+
+    // Landing extras
+    heroSubtitleTag: 'UMUCO • UBUHANZI • IMPANO • IBYISHIMO • UMWARIRO',
+    landingStatsEvents: 'Birori byinshi muri uyu mwaka',
+    landingStatsMembers: 'Abana n’ababyeyi batavuye kuri platform',
+    landingStatsSessions: 'Amasomo y’uburorikanyabahanga',
+    landingStatsVenue: 'IWACU Cultural Center, Nyakaliro',
+
+    // Login & Register (customer account)
+    loginBadge: 'KONTU YAWE ISHOBOKE',
+    loginTitle: 'Kwinjira no Kwiyandikisha',
+    loginSubtitle: 'Imitere y’abakiriya: Gura amatike, kubona kode yawe yo kuramutsa abandi, hanyuma ubone itike yawe ya QR ku telefone yawe.',
+    loginTabSignIn: 'Kwinjira',
+    loginTabRegister: 'Kwiyandikisha',
+    loginIdentifierLabel: 'Nimero ya telefone cyangwa imeri',
+    loginIdentifierPlaceholder: '+250 788 123 456',
+    loginPasswordLabel: 'Ijambobanga',
+    loginPasswordPlaceholder: '••••••••',
+    loginHint: 'Injira ukoresheje telefone yawe ngo ubone amatike yawe, kode yawe n’amakuru yawe.',
+    loginSignInBtn: 'INJIRA',
+    loginSigningIn: 'Birakora...',
+    loginBackHome: 'Gusubira ku rubuga rw’ibanze',
+    registerFullNameLabel: 'Amazina yombi',
+    registerFullNamePlaceholder: 'urugero: Alice Uwase',
+    registerPhoneLabel: 'Nimero ya telefone (MTN / Airtel)',
+    registerPhonePlaceholder: '+250 788 123 456',
+    registerEmailLabel: 'Imeri (bishatse)',
+    registerEmailPlaceholder: 'parent@example.rw',
+    registerPasswordLabel: 'Ijambobanga',
+    registerPasswordHint: 'Byibuze inyuguti 6',
+    registerConfirmLabel: 'Emeza ijambobanga',
+    registerConfirmPlaceholder: 'Songera andika ijambobanga',
+    registerBenefitTitle: 'Kuki kwiyandikisha?',
+    registerBenefitQr: 'Uhabwa itike ya QR ihujwe n’amazina yawe.',
+    registerBenefitCode: 'Uhabwa kode yo kuramutsa abandi bagera ku igabanijwe.',
+    registerBenefitInstant: 'Amatike yawe aza ako kanya niba wishyuye.',
+    registerBtn: 'Iyandikishe & Ugure Amatike',
+    registerCreating: 'Birakora...',
+    registerPasswordMismatch: 'Ijambobanga ryanditswe hakurikiraho ntabwo rihuye.',
+    registerFieldMissing: 'Uzuza imirimo imwe n’imwe (maze ugaragaze itelefone n’ijambobanga).',
+    passwordShow: 'Erekana ijambobanga',
+    passwordHide: 'Hisha ijambobanga',
+    staffAccessTitle: 'Abakozi n’Abayobozi gusa',
+    staffAccessDesc: 'Kwinjira, kugenzura amatike (QR verification) n’ubuyobozi bisabwa ku bipindi bya Admin / Gate pejini.',
+    staffAccessBtn: 'Injira ku Irembo rya Gate / Admin',
+    staffAccessNote: 'Kode zo kwinjira n’uburenganzira bwo gusikana ntiboneka kuri iyi pejini.',
   },
   en: {
     // Brand & General
@@ -534,5 +626,53 @@ export const translations: Record<SupportedLanguage, Translations> = {
     adminClearanceApproved: 'Clearance Approved',
     adminClearanceRevoked: 'Clearance Revoked',
     adminAddScannerHelper: 'Add Scanner Helper',
+
+    // Landing extras
+    heroSubtitleTag: 'CULTURE • CREATIVITY • TALENT • FUN • COMMUNITY',
+    landingStatsEvents: 'Cultural events this year',
+    landingStatsMembers: 'Kids & families on the platform',
+    landingStatsSessions: 'Creative arts sessions',
+    landingStatsVenue: 'IWACU Cultural Center, Nyakaliro',
+
+    // Login & Register (customer account)
+    loginBadge: 'YOUR FAMILY PASS PORTAL',
+    loginTitle: 'Sign In & Create Account',
+    loginSubtitle:
+      'Customer portal: buy event tickets, get your personal referral code, and receive your QR entrance pass instantly on your phone.',
+    loginTabSignIn: 'Sign In',
+    loginTabRegister: 'Create Account',
+    loginIdentifierLabel: 'Phone Number or Email',
+    loginIdentifierPlaceholder: '+250 788 123 456',
+    loginPasswordLabel: 'Password',
+    loginPasswordPlaceholder: '••••••••',
+    loginHint: 'Sign in with your phone number to view your tickets, referral code, and profile.',
+    loginSignInBtn: 'SIGN IN',
+    loginSigningIn: 'Authenticating...',
+    loginBackHome: 'Back to Home Page',
+    registerFullNameLabel: 'Full Name',
+    registerFullNamePlaceholder: 'e.g. Alice Uwase',
+    registerPhoneLabel: 'Phone Number (MTN / Airtel)',
+    registerPhonePlaceholder: '+250 788 123 456',
+    registerEmailLabel: 'Email Address (Optional)',
+    registerEmailPlaceholder: 'parent@example.rw',
+    registerPasswordLabel: 'Password',
+    registerPasswordHint: 'Min 6 characters',
+    registerConfirmLabel: 'Confirm Password',
+    registerConfirmPlaceholder: 'Repeat password',
+    registerBenefitTitle: 'Why create an account?',
+    registerBenefitQr: 'Your QR ticket is issued with your full name.',
+    registerBenefitCode: 'Get a personal referral code to save on every booking.',
+    registerBenefitInstant: 'Tickets are delivered instantly after payment.',
+    registerBtn: 'Create Account & Get Tickets',
+    registerCreating: 'Creating Account...',
+    registerPasswordMismatch: 'Passwords do not match.',
+    registerFieldMissing: 'Please fill in all the required fields (name, phone, and password).',
+    passwordShow: 'Show password',
+    passwordHide: 'Hide password',
+    staffAccessTitle: 'For Admin & Gate Helper Staff only',
+    staffAccessDesc:
+      'Login, QR ticket verification, and event management are handled on the secured Admin / Gate pages only.',
+    staffAccessBtn: 'Open Gate / Admin Sign-In',
+    staffAccessNote: 'Staff verification codes and scanner clearance are never shown on this page.',
   },
 };
